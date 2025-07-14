@@ -1,6 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,6 +8,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AddMemberModal } from '../add-member-modal/add-member-modal';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
+import { OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { SavingGoal } from '../../models/saving.model';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -21,35 +26,31 @@ import { MatDialog } from '@angular/material/dialog';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressBarModule,
+    MatChipsModule,
     CommonModule,
   ],
 })
-export class DashboardAdminComponent {
+export class DashboardAdminComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   @Input() role: string = '';
 
-  constructor(private dialog: MatDialog) {}
+  savingGoals$: Observable<SavingGoal[]> = of([]);
+  gridCols = 2;
 
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 },
-        ];
-      }
+  constructor(private dialog: MatDialog, private http: HttpClient) {}
 
-      return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 },
-      ];
-    })
-  );
+  ngOnInit() {
+    this.breakpointObserver
+      .observe(Breakpoints.Handset)
+      .subscribe(({ matches }) => {
+        this.gridCols = matches ? 1 : 2;
+      });
+
+    this.savingGoals$ = this.http.get<SavingGoal[]>(
+      'https://dsantanderac.github.io/reach-it-data/saving-goals.json'
+    );
+  }
 
   openAddMemberDialog() {
     this.dialog.open(AddMemberModal, {

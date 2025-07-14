@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../models/user.model';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatIconModule,
   ],
 })
-export class Login {
+export class Login implements OnInit {
   loginForm: FormGroup;
   users: User[] = [];
 
@@ -42,17 +43,30 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.email]],
       password: [''],
     });
+  }
 
-    if (typeof localStorage !== 'undefined') {
-      const savedUsers = localStorage.getItem('users');
-      this.users = savedUsers ? JSON.parse(savedUsers) : [];
-    }
+  async ngOnInit() {
+    this.http
+      .get<User[]>('https://dsantanderac.github.io/reach-it-data/users.json')
+      .subscribe({
+        next: (users) => {
+          this.users = users;
+        },
+        error: () => {
+          this.openDialog({
+            title: 'Error',
+            message: 'No se pudieron cargar los usuarios. Intenta más tarde.',
+            hideCancel: true,
+          });
+        },
+      });
   }
 
   onSubmit() {

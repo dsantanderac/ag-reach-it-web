@@ -1,4 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.chip-active.mat-mdc-chip,
+.chip-active.mat-mdc-chip .mdc-evolution-chip__text-label {
+  background: rgb(41, 182, 246, 0.8) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.chip-completed.mat-mdc-chip,
+.chip-completed.mat-mdc-chip .mdc-evolution-chip__text-label {
+  background: rgba(67, 160, 71, 0.18) !important;
+  color: #43a047 !important;
+  font-weight: 600 !important;
+}
+
+.chip-cancelled.mat-mdc-chip,
+.chip-cancelled.mat-mdc-chip .mdc-evolution-chip__text-label {
+  background: rgba(229, 57, 53, 0.18) !important;
+  color: #e53935 !important;
+  font-weight: 600 !important;
+}
+
+.chip-active.mat-mdc-chip .mdc-evolution-chip__text-label,
+.chip-completed.mat-mdc-chip .mdc-evolution-chip__text-label,
+.chip-cancelled.mat-mdc-chip .mdc-evolution-chip__text-label {
+  background: transparent !important;
+}

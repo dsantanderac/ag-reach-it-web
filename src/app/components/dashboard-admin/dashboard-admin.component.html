@@ -1,40 +1,88 @@
-<div class="grid-container">
+<div class="dashboard-toolbar">
+  <span class="dashboard-title">Metas familiares</span>
+  <span class="dashboard-spacer"></span>
   <button
     *ngIf="role === 'familyHead'"
-    mat-raised-button
+    mat-fab
     color="primary"
     type="button"
+    class="add-member-btn"
     (click)="openAddMemberDialog()"
+    aria-label="Agregar miembro"
   >
-    <mat-icon>add</mat-icon>Agregar miembro
+    <mat-icon>person_add</mat-icon>
   </button>
+</div>
 
-  <mat-grid-list cols="2" rowHeight="350px">
-    @for (card of cards | async; track card) {
-    <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ card.title }}
+<div class="dashboard-main">
+  <div *ngIf="savingGoals$ | async as goals">
+    <div class="dashboard-grid">
+      <div *ngFor="let goal of goals" class="dashboard-card-wrapper">
+        <mat-card class="dashboard-card" matRipple>
+          <mat-card-header>
+            <div mat-card-avatar class="goal-avatar">
+              <mat-icon>emoji_events</mat-icon>
+            </div>
+            <mat-card-title>{{ goal.title }}</mat-card-title>
+            <mat-card-subtitle>{{ goal.description }}</mat-card-subtitle>
+            <span class="spacer"></span>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item>Expandir</button>
+              <button mat-menu-item>Eliminar</button>
+            </mat-menu>
             <button
-              matIconButton
-              class="more-button"
+              mat-icon-button
               [matMenuTriggerFor]="menu"
               aria-label="Toggle menu"
             >
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-    }
-  </mat-grid-list>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div class="amount-row">
+              <div>
+                <strong>Monto objetivo:</strong>
+                {{ goal.targetAmount | currency : "CLP" }}
+              </div>
+              <div>
+                <strong>Recaudado:</strong>
+                {{ goal.currentAmount | currency : "CLP" }}
+              </div>
+            </div>
+            <div class="status-row">
+              <mat-chip
+                [ngClass]="{
+                  'chip-active': goal.status === 'active',
+                  'chip-completed': goal.status === 'completed',
+                  'chip-cancelled': goal.status === 'cancelled'
+                }"
+                selected
+              >
+                {{
+                  goal.status === "active"
+                    ? "Activa"
+                    : goal.status === "completed"
+                    ? "Completada"
+                    : "Cancelada"
+                }}
+              </mat-chip>
+              <span class="goal-progress">
+                <mat-progress-bar
+                  mode="determinate"
+                  [value]="(100 * goal.currentAmount) / goal.targetAmount"
+                  color="accent"
+                ></mat-progress-bar>
+              </span>
+            </div>
+            <div class="date-row">
+              <mat-icon class="calendar-icon">event</mat-icon>
+              <span
+                >Fecha límite: {{ goal.dueDate | date : "mediumDate" }}</span
+              >
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,21 +1,110 @@
-.grid-container {
-  margin: 20px;
+.dashboard-main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.dashboard-card-wrapper {
+  display: flex;
+  align-items: stretch;
 }
 
 .dashboard-card {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px 0 rgba(40, 60, 160, 0.08);
+  transition: box-shadow 0.2s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-card:hover {
+  box-shadow: 0 8px 32px 0 rgba(40, 60, 160, 0.18);
 }
 
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
+.goal-avatar {
+  background: #e1f5fe;
+  color: #1976d2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }
 
 .dashboard-card-content {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.amount-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.goal-progress {
+  flex: 1;
+  min-width: 100px;
+  margin-left: 12px;
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #757575;
+}
+
+.calendar-icon {
+  font-size: 18px;
+  color: #1976d2;
+}
+
+.dashboard-toolbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px auto;
+  padding: 0 16px;
+  min-height: 64px;
+  box-sizing: border-box;
+}
+
+.dashboard-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #283593;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-spacer {
+  flex: 1 1 auto;
+}
+
+.add-member-btn {
+  margin-left: 8px;
+  box-shadow: 0 3px 10px rgba(44, 62, 80, 0.1);
 }
