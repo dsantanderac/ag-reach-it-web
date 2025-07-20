@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -17,6 +17,8 @@ import { Family } from '../../models/family.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user';
+import { FamilyService } from '../../services/family';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +35,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
+export class Register implements OnInit {
   registerForm: FormGroup;
   users: User[] = [];
   families: Family[] = [];
@@ -54,7 +56,9 @@ export class Register {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private userService: UserService,
+    private familyService: FamilyService
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -64,22 +68,15 @@ export class Register {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
     });
+  }
 
-    if (typeof localStorage !== 'undefined') {
-      const savedUsers = localStorage.getItem('users');
-      this.users = savedUsers ? JSON.parse(savedUsers) : [];
-
-      const savedFamilies = localStorage.getItem('families');
-      this.families = savedFamilies ? JSON.parse(savedFamilies) : [];
-
-      console.log('users registered', this.users);
-      console.log('families registered', this.families);
-    }
+  ngOnInit() {
+    this.users = this.userService.getUsers();
+    this.families = this.familyService.getFamilies();
   }
 
   register(user: User & { familyName: string }): boolean {
     if (this.users.find((u) => u.email === user.email)) {
-      console.log(`user ${user.email} already exists`);
       this.openDialog({
         title: 'Oops!',
         message: 'El correo ingresado ya se encuentra registrado.',
@@ -88,7 +85,6 @@ export class Register {
       return false;
     }
     if (user.password !== this.registerForm.value.confirmPassword) {
-      console.log("passwords doesn't match");
       this.openDialog({
         title: 'Oops!',
         message: 'Las contraseñas no coinciden.',
@@ -96,20 +92,20 @@ export class Register {
       });
       return false;
     }
-    this.users.push(user);
-    localStorage.setItem('users', JSON.stringify(this.users));
-    localStorage.setItem('currentUser', JSON.stringify(user)); // since we're logging in the user soon as is created, we set the current user
-    console.log(`user ${user.email} successfully saved`);
 
-    // create family record
+    this.userService.addUser(user);
+    this.users = this.userService.getUsers();
+
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
     const newFamily: Family = {
       name: this.registerForm.value.familyName!,
       headId: user.id,
-      members: [user.id], // familyHead just created is the first member
+      members: [user.id],
     };
+    this.familyService.addFamily(newFamily);
+    this.families = this.familyService.getFamilies();
 
-    this.families.push(newFamily);
-    localStorage.setItem('families', JSON.stringify(this.families));
     return true;
   }
 

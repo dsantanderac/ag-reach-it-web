@@ -1,6 +1,6 @@
 export interface SavingGoal {
   id: string;
-  familyName: string;
+  familyId: string;
   title: string;
   description: string;
   targetAmount: number;

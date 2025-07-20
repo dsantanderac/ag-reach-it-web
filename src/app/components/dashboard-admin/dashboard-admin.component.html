@@ -9,8 +9,20 @@
     class="add-member-btn"
     (click)="openAddMemberDialog()"
     aria-label="Agregar miembro"
+    style="margin-right: 10px"
   >
     <mat-icon>person_add</mat-icon>
+  </button>
+  <button
+    *ngIf="role === 'familyHead'"
+    mat-fab
+    color="accent"
+    type="button"
+    class="add-goal-btn"
+    (click)="openAddGoalDialog()"
+    aria-label="Agregar meta"
+  >
+    <mat-icon>add</mat-icon>
   </button>
 </div>
 

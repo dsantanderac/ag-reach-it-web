@@ -15,6 +15,7 @@ import { User } from '../../models/user.model';
 import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../../services/user';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +45,8 @@ export class Login implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private dialog: MatDialog,
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.email]],
@@ -53,20 +55,8 @@ export class Login implements OnInit {
   }
 
   async ngOnInit() {
-    this.http
-      .get<User[]>('https://dsantanderac.github.io/reach-it-data/users.json')
-      .subscribe({
-        next: (users) => {
-          this.users = users;
-        },
-        error: () => {
-          this.openDialog({
-            title: 'Error',
-            message: 'No se pudieron cargar los usuarios. Intenta más tarde.',
-            hideCancel: true,
-          });
-        },
-      });
+    this.users = this.userService.getUsers();
+    console.log('init users', this.users);
   }
 
   onSubmit() {
