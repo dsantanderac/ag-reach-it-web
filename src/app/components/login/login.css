@@ -13,3 +13,114 @@ form {
 .full-width {
   width: 100%;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 599px) {
+  form {
+    max-width: 100%;
+    margin: 16px;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  form h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .full-width {
+    margin-bottom: 8px;
+  }
+
+  form button {
+    margin-top: 8px;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+/* Tablet responsive styles */
+@media (min-width: 600px) and (max-width: 959px) {
+  form {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 2.5rem;
+  }
+}
+
+/* Desktop responsive styles */
+@media (min-width: 960px) {
+  form {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  }
+
+  form h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Form field responsive improvements */
+mat-form-field {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 599px) {
+  mat-form-field {
+    margin-bottom: 16px;
+  }
+
+  mat-form-field .mat-mdc-form-field {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  mat-form-field input {
+    font-size: 16px;
+  }
+}
+
+/* Button responsive improvements */
+button[mat-raised-button] {
+  height: 48px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@media (max-width: 599px) {
+  button[mat-raised-button] {
+    height: 52px;
+    font-size: 16px;
+  }
+
+  button[mat-button] {
+    height: 44px;
+    font-size: 14px;
+  }
+}
+
+/* Container responsive improvements */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+}
+
+@media (min-width: 600px) {
+  .login-container {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  .login-container {
+    padding: 32px;
+  }
+}

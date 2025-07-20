@@ -1,6 +1,63 @@
-.dashboard-card {
-    margin: 20px auto;
-    padding: 24px;
-    text-align: center;
-    background-color: #fafafa;
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 599px) {
+  .dashboard-container {
+    height: 100vh;
+    overflow: hidden;
   }
+
+  .sidebar {
+    width: 100%;
+  }
+}
+
+/* Tablet responsive adjustments */
+@media (min-width: 600px) and (max-width: 959px) {
+  .dashboard-container {
+    height: 100vh;
+  }
+}
+
+/* Desktop responsive adjustments */
+@media (min-width: 960px) {
+  .dashboard-container {
+    height: 100vh;
+  }
+}
+
+/* Ensure content area is properly sized */
+.dashboard-container .example-sidenav-container {
+  flex: 1;
+  height: 100%;
+}
+
+/* Mobile content area adjustments */
+@media (max-width: 599px) {
+  .dashboard-container .example-sidenav-container {
+    height: calc(100vh - 56px); /* Account for mobile toolbar height */
+  }
+}
+
+/* Ensure proper overflow handling */
+.dashboard-container .mat-sidenav-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Mobile scroll improvements */
+@media (max-width: 599px) {
+  .dashboard-container .mat-sidenav-content {
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+}

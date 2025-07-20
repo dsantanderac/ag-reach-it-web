@@ -1,7 +1,12 @@
 <div class="dashboard-container">
   <div class="sidebar">
-    <app-sidebar [userName]="currentUser.name" [role]="currentUser.role">
-      <app-dashboard-admin [role]="currentUser.role"></app-dashboard-admin>
+    <app-sidebar
+      [userName]="currentUser?.name || ''"
+      [role]="currentUser?.role || ''"
+    >
+      <app-dashboard-admin
+        [role]="currentUser?.role || ''"
+      ></app-dashboard-admin>
     </app-sidebar>
   </div>
 </div>

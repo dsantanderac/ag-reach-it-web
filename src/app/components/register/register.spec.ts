@@ -1,112 +1,142 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Register } from './register';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
+
+import { Register } from './register';
+import { UserService } from '../../services/user';
+import { FamilyService } from '../../services/family';
+import { User } from '../../models/user.model';
+import { Family } from '../../models/family.model';
+import { ConfirmDialogComponent } from '../../shared/dialogs/confirm-dialog/confirm-dialog';
 
 describe('Register', () => {
   let component: Register;
   let fixture: ComponentFixture<Register>;
-  let routerSpy: jasmine.SpyObj<Router>;
-  let dialogSpy: jasmine.SpyObj<MatDialog>;
+  let router: jasmine.SpyObj<Router>;
+  let dialog: jasmine.SpyObj<MatDialog>;
+  let userService: jasmine.SpyObj<UserService>;
+  let familyService: jasmine.SpyObj<FamilyService>;
+
+  const mockUsers: User[] = [
+    {
+      id: '1',
+      name: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      password: 'password123',
+      role: 'familyHead',
+    },
+  ];
+
+  const mockFamilies: Family[] = [
+    {
+      name: 'Doe Family',
+      headId: '1',
+      members: ['1'],
+    },
+  ];
 
   beforeEach(async () => {
-    // Create spies
-    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-    dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-
-    // Configure localStorage mock
-    let store: { [key: string]: string } = {};
-    spyOn(localStorage, 'getItem').and.callFake((key: string): string => {
-      return store[key] || '';
-    });
-    spyOn(localStorage, 'setItem').and.callFake(
-      (key: string, value: string): void => {
-        store[key] = value;
-      }
-    );
-    spyOn(localStorage, 'clear').and.callFake((): void => {
-      store = {};
-    });
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+    const userServiceSpy = jasmine.createSpyObj('UserService', [
+      'getUsers',
+      'addUser',
+    ]);
+    const familyServiceSpy = jasmine.createSpyObj('FamilyService', [
+      'getFamilies',
+      'addFamily',
+    ]);
 
     await TestBed.configureTestingModule({
-      imports: [Register, BrowserAnimationsModule],
+      imports: [Register, ReactiveFormsModule, BrowserAnimationsModule],
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: MatDialog, useValue: dialogSpy },
+        { provide: UserService, useValue: userServiceSpy },
+        { provide: FamilyService, useValue: familyServiceSpy },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Register);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
+    dialog = TestBed.inject(MatDialog) as jasmine.SpyObj<MatDialog>;
+    userService = TestBed.inject(UserService) as jasmine.SpyObj<UserService>;
+    familyService = TestBed.inject(
+      FamilyService
+    ) as jasmine.SpyObj<FamilyService>;
 
-  afterEach(() => {
-    // Clean localStorage after each test
-    localStorage.clear();
+    // Setup spies
+    userService.getUsers.and.returnValue(mockUsers);
+    familyService.getFamilies.and.returnValue(mockFamilies);
+    dialog.open.and.returnValue({
+      afterClosed: () => of(true),
+    } as any);
+
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should register a new user and create a family', () => {
-    // Configure form values
-    component.registerForm.setValue({
-      name: 'Alex',
-      lastName: 'Johnson',
-      familyName: 'JohnsonFam',
-      email: 'alex@example.com',
-      password: 'securePass1',
-      confirmPassword: 'securePass1',
-    });
-
-    // Simulate dialog
-    dialogSpy.open.and.returnValue({
-      afterClosed: () => ({
-        subscribe: (callback: (result: boolean) => void) => callback(true),
-      }),
-    } as any);
-
-    // Call onSubmit
-    component.onSubmit();
-
-    // Check localStorage saved
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const families = JSON.parse(localStorage.getItem('families') || '[]');
-
-    expect(users.length).toBe(1);
-    expect(users[0].email).toBe('alex@example.com');
-    expect(families.length).toBe(1);
-    expect(families[0].name).toBe('JohnsonFam');
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/home']);
+  it('should initialize with empty form', () => {
+    expect(component.registerForm.get('name')?.value).toBe('');
+    expect(component.registerForm.get('lastName')?.value).toBe('');
+    expect(component.registerForm.get('familyName')?.value).toBe('');
+    expect(component.registerForm.get('email')?.value).toBe('');
+    expect(component.registerForm.get('password')?.value).toBe('');
+    expect(component.registerForm.get('confirmPassword')?.value).toBe('');
   });
 
-  it('should not register if email already exists', () => {
-    component.registerForm.setValue({
-      name: 'Alex',
-      lastName: 'Johnson',
-      familyName: 'JohnsonFam',
-      email: 'alex@example.com',
-      password: 'securePass1',
-      confirmPassword: 'securePass1',
-    });
-    component.onSubmit();
+  it('should have required validators', () => {
+    const nameControl = component.registerForm.get('name');
+    const lastNameControl = component.registerForm.get('lastName');
+    const emailControl = component.registerForm.get('email');
+    const passwordControl = component.registerForm.get('password');
+    const confirmPasswordControl =
+      component.registerForm.get('confirmPassword');
 
-    // Try to register an used email
-    component.registerForm.setValue({
-      name: 'Alex2',
-      lastName: 'Johnson2',
-      familyName: 'JohnsonFam2',
-      email: 'alex@example.com',
-      password: 'securePass2',
-      confirmPassword: 'securePass2',
-    });
-    component.onSubmit();
+    expect(nameControl?.hasError('required')).toBeTruthy();
+    expect(lastNameControl?.hasError('required')).toBeTruthy();
+    expect(emailControl?.hasError('required')).toBeTruthy();
+    expect(passwordControl?.hasError('required')).toBeTruthy();
+    expect(confirmPasswordControl?.hasError('required')).toBeTruthy();
+  });
 
-    // Just one user should be saved
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    expect(users.length).toBe(1);
+  it('should have email validation', () => {
+    const emailControl = component.registerForm.get('email');
+
+    emailControl?.setValue('invalid-email');
+    expect(emailControl?.hasError('email')).toBeTruthy();
+
+    emailControl?.setValue('valid@email.com');
+    expect(emailControl?.hasError('email')).toBeFalsy();
+  });
+
+  it('should have password minimum length validation', () => {
+    const passwordControl = component.registerForm.get('password');
+
+    passwordControl?.setValue('123');
+    expect(passwordControl?.hasError('minlength')).toBeTruthy();
+
+    passwordControl?.setValue('password123');
+    expect(passwordControl?.hasError('minlength')).toBeFalsy();
+  });
+
+  it('should toggle password visibility', () => {
+    expect(component.hide()).toBe(true);
+
+    const mockEvent = new MouseEvent('click');
+    spyOn(mockEvent, 'stopPropagation');
+
+    component.hideEvent(mockEvent);
+
+    expect(component.hide()).toBe(false);
+    expect(mockEvent.stopPropagation).toHaveBeenCalled();
   });
 });

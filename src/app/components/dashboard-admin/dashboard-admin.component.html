@@ -26,6 +26,28 @@
   </button>
 </div>
 
+<!-- Mobile Floating Action Buttons -->
+<div class="mobile-fab-container" *ngIf="role === 'familyHead'">
+  <button
+    mat-fab
+    color="primary"
+    type="button"
+    (click)="openAddMemberDialog()"
+    aria-label="Agregar miembro"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+  <button
+    mat-fab
+    color="accent"
+    type="button"
+    (click)="openAddGoalDialog()"
+    aria-label="Agregar meta"
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
 <div class="dashboard-main">
   <div *ngIf="savingGoals$ | async as goals">
     <div class="dashboard-grid">

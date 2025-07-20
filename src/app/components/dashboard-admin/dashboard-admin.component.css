@@ -2,14 +2,48 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: 0 16px;
+}
+
+@media (min-width: 600px) {
+  .dashboard-main {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  .dashboard-main {
+    padding: 0 32px;
+  }
 }
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: 16px;
   max-width: 1200px;
   width: 100%;
+}
+
+@media (min-width: 600px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 960px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
 }
 
 .dashboard-card-wrapper {
@@ -26,8 +60,21 @@
   display: flex;
   flex-direction: column;
 }
+
 .dashboard-card:hover {
   box-shadow: 0 8px 32px 0 rgba(40, 60, 160, 0.18);
+}
+
+/* Mobile card improvements */
+@media (max-width: 599px) {
+  .dashboard-card {
+    border-radius: 16px;
+    box-shadow: 0 2px 12px 0 rgba(40, 60, 160, 0.12);
+  }
+
+  .dashboard-card:hover {
+    box-shadow: 0 4px 20px 0 rgba(40, 60, 160, 0.15);
+  }
 }
 
 .goal-avatar {
@@ -49,6 +96,15 @@
   gap: 14px;
   margin-top: 8px;
   font-size: 15px;
+  padding: 0 16px 16px 16px;
+}
+
+@media (max-width: 599px) {
+  .dashboard-card-content {
+    gap: 12px;
+    font-size: 14px;
+    padding: 0 12px 12px 12px;
+  }
 }
 
 .amount-row {
@@ -57,10 +113,33 @@
   gap: 4px;
 }
 
+@media (max-width: 599px) {
+  .amount-row {
+    gap: 2px;
+  }
+
+  .amount-row div {
+    font-size: 13px;
+  }
+}
+
 .status-row {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+@media (max-width: 599px) {
+  .status-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .goal-progress {
+    width: 100%;
+    margin-left: 0 !important;
+  }
 }
 
 .goal-progress {
@@ -77,9 +156,22 @@
   color: #757575;
 }
 
+@media (max-width: 599px) {
+  .date-row {
+    font-size: 12px;
+    gap: 6px;
+  }
+}
+
 .calendar-icon {
   font-size: 18px;
   color: #1976d2;
+}
+
+@media (max-width: 599px) {
+  .calendar-icon {
+    font-size: 16px;
+  }
 }
 
 .dashboard-toolbar {
@@ -91,6 +183,38 @@
   padding: 0 16px;
   min-height: 64px;
   box-sizing: border-box;
+}
+
+@media (max-width: 599px) {
+  .dashboard-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    min-height: auto;
+    margin-bottom: 24px;
+  }
+
+  .dashboard-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-spacer {
+    display: none;
+  }
+
+  .add-member-btn,
+  .add-goal-btn {
+    margin: 0 4px !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .dashboard-toolbar {
+    padding: 0 24px;
+    margin-bottom: 28px;
+  }
 }
 
 .dashboard-title {
@@ -107,4 +231,71 @@
 .add-member-btn {
   margin-left: 8px;
   box-shadow: 0 3px 10px rgba(44, 62, 80, 0.1);
+}
+
+/* Mobile floating action buttons - ONLY show on mobile */
+.mobile-fab-container {
+  display: none; /* Hidden by default */
+}
+
+@media (max-width: 599px) {
+  .mobile-fab-container {
+    display: flex;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile-fab-container button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Hide desktop toolbar buttons on mobile */
+  .dashboard-toolbar .add-member-btn,
+  .dashboard-toolbar .add-goal-btn {
+    display: none;
+  }
+}
+
+/* Ensure desktop buttons are visible on larger screens */
+@media (min-width: 600px) {
+  .dashboard-toolbar .add-member-btn,
+  .dashboard-toolbar .add-goal-btn {
+    display: flex !important;
+  }
+}
+
+/* Card header responsive improvements */
+@media (max-width: 599px) {
+  .dashboard-card mat-card-header {
+    padding: 12px 12px 0 12px;
+  }
+
+  .dashboard-card mat-card-title {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+
+  .dashboard-card mat-card-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+}
+
+/* Progress bar responsive improvements */
+@media (max-width: 599px) {
+  .goal-progress mat-progress-bar {
+    height: 6px;
+  }
+}
+
+/* Chip responsive improvements */
+@media (max-width: 599px) {
+  .status-row mat-chip {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
 }

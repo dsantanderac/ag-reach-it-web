@@ -41,6 +41,30 @@ h1.example-app-name {
   padding-top: 20px;
 }
 
+/* Mobile responsive sidenav */
+@media (max-width: 599px) {
+  .custom-sidenav {
+    width: 280px;
+    padding-top: 16px;
+  }
+
+  .example-toolbar {
+    padding: 0 8px;
+  }
+
+  .example-toolbar .example-app-name {
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+  }
+
+  .menu-button {
+    margin-right: 8px;
+  }
+}
+
 .nav-item {
   display: flex;
   align-items: center;
@@ -59,4 +83,63 @@ h1.example-app-name {
   font-weight: 500;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.87);
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 599px) {
+  .nav-item {
+    padding: 16px 20px;
+    margin: 2px 12px;
+    border-radius: 12px;
+  }
+
+  .nav-text {
+    font-size: 16px;
+  }
+
+  .nav-item mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* Responsive toolbar */
+.example-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  min-height: 64px;
+}
+
+@media (max-width: 599px) {
+  .example-toolbar {
+    min-height: 56px;
+    padding: 0 12px;
+  }
+
+  .example-app-name {
+    font-size: 16px !important;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Sidenav content responsive padding */
+mat-sidenav-content {
+  padding: 16px;
+}
+
+@media (min-width: 600px) {
+  mat-sidenav-content {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  mat-sidenav-content {
+    padding: 32px;
+  }
 }

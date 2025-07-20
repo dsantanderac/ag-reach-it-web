@@ -8,6 +8,243 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+/* Responsive breakpoints */
+:root {
+  --breakpoint-xs: 0px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1920px;
+}
+
+/* Responsive utilities */
+.hide-xs {
+  display: none !important;
+}
+
+.show-xs {
+  display: block !important;
+}
+
+@media (min-width: 600px) {
+  .hide-sm {
+    display: none !important;
+  }
+  .show-sm {
+    display: block !important;
+  }
+  .hide-xs {
+    display: block !important;
+  }
+  .show-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .hide-md {
+    display: none !important;
+  }
+  .show-md {
+    display: block !important;
+  }
+  .hide-sm {
+    display: block !important;
+  }
+  .show-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hide-lg {
+    display: none !important;
+  }
+  .show-lg {
+    display: block !important;
+  }
+  .hide-md {
+    display: block !important;
+  }
+  .show-md {
+    display: none !important;
+  }
+}
+
+/* Mobile-first responsive container */
+.container {
+  width: 100%;
+  padding-right: 16px;
+  padding-left: 16px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 600px) {
+  .container {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 960px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1920px;
+  }
+}
+
+/* Responsive spacing utilities */
+.responsive-padding {
+  padding: 16px;
+}
+
+@media (min-width: 600px) {
+  .responsive-padding {
+    padding: 24px;
+  }
+}
+
+@media (min-width: 960px) {
+  .responsive-padding {
+    padding: 32px;
+  }
+}
+
+/* Mobile optimization for forms */
+@media (max-width: 599px) {
+  .mobile-form {
+    padding: 16px !important;
+    margin: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .mobile-form mat-form-field {
+    margin-bottom: 16px;
+  }
+
+  .mobile-form button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+}
+
+/* Responsive grid utilities */
+.responsive-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 960px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+}
+
+/* Mobile toolbar adjustments */
+@media (max-width: 599px) {
+  .mobile-toolbar {
+    padding: 0 8px !important;
+  }
+
+  .mobile-toolbar .mat-toolbar-row {
+    min-height: 56px !important;
+  }
+
+  .mobile-toolbar button {
+    margin: 0 4px !important;
+  }
+}
+
+/* Responsive dialog/modal - IMPROVED */
+@media (max-width: 599px) {
+  .mat-mdc-dialog-container {
+    margin: 8px !important;
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(100vh - 16px) !important;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 16px !important;
+    max-height: 60vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: 12px 16px 16px 16px !important;
+  }
+}
+
+/* Desktop dialog/modal */
+@media (min-width: 600px) {
+  .mat-mdc-dialog-container {
+    margin: 24px !important;
+    max-width: 500px !important;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 24px !important;
+    max-height: 70vh !important;
+    overflow-y: auto !important;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: 16px 24px 24px 24px !important;
+  }
+}
+
+/* Fix form field sizing on mobile */
+@media (max-width: 599px) {
+  .mat-mdc-form-field {
+    font-size: 16px !important;
+  }
+
+  .mat-mdc-form-field input,
+  .mat-mdc-form-field textarea {
+    font-size: 16px !important;
+    height: auto !important;
+    padding: 12px 0 !important;
+  }
+
+  .mat-mdc-form-field textarea {
+    min-height: 60px !important;
+  }
+}
+
+/* Ensure proper modal scrolling */
+.mat-mdc-dialog-content {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Chip styles */
 .chip-active.mat-mdc-chip,
 .chip-active.mat-mdc-chip .mdc-evolution-chip__text-label {
   background: rgb(41, 182, 246, 0.8) !important;

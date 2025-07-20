@@ -4,15 +4,15 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from '@angular/material/dialog';
-import { AddMemberModal } from './add-member-modal';
+import { ConfirmDialogComponent } from './confirm-dialog';
 
-describe('AddMemberModal', () => {
-  let component: AddMemberModal;
-  let fixture: ComponentFixture<AddMemberModal>;
+describe('ConfirmDialogComponent', () => {
+  let component: ConfirmDialogComponent;
+  let fixture: ComponentFixture<ConfirmDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddMemberModal],
+      imports: [ConfirmDialogComponent],
       providers: [
         { provide: MatDialogRef, useValue: { close: () => {} } },
         {
@@ -25,7 +25,7 @@ describe('AddMemberModal', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddMemberModal);
+    fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

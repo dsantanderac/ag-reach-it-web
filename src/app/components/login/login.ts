@@ -67,7 +67,10 @@ export class Login implements OnInit {
         title: 'Datos incompletos',
         message: 'Debes ingresar correo y contraseña para poder entrar',
         hideCancel: true,
+        hideConfirm: false,
       });
+
+      return;
     }
 
     console.log('users', this.users);
@@ -86,6 +89,7 @@ export class Login implements OnInit {
         title: 'Credenciales inválidas',
         message: 'Correo y/o contraseña ingresados son incorrectos',
         hideCancel: true,
+        hideConfirm: false,
       });
     }
   }
