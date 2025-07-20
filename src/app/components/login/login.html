@@ -1,38 +1,42 @@
 <div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mobile-form">
-    <h2>Bienvenido a ReachIt!</h2>
-
-    <mat-form-field class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email" />
-      <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-        Debes ingresar un email válido
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Contraseña</mat-label>
-      <input
-        matInput
-        [type]="hide() ? 'password' : 'text'"
-        formControlName="password"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        type="button"
-        (click)="hideEvent($event)"
-      >
-        <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+  <div class="login-card">
+    <img
+      src="../../../assets/family-saving.png"
+      alt="family-saving"
+      class="login-illustration"
+      loading="lazy"
+    />
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <h2>Bienvenido a ReachIt!</h2>
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
+          Debes ingresar un email válido
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          [type]="hide() ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideEvent($event)"
+        >
+          <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        Iniciar sesión
       </button>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" type="submit">
-      Iniciar sesión
-    </button>
-
-    <button mat-button type="button" color="primary" (click)="goToRegister()">
-      ¿No tienes cuenta? Regístrate
-    </button>
-  </form>
+      <button mat-button type="button" color="primary" (click)="goToRegister()">
+        ¿No tienes cuenta? Regístrate
+      </button>
+    </form>
+  </div>
 </div>
